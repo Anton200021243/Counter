@@ -1,23 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Counter : MonoBehaviour
 {
-    private int _iterationsCount = 10;
     private float _delay = 0.5f;
     private int _count;
+    private bool _isActive = false;
 
-    private void Start()
+    private void Update()
     {
-        StartCoroutine(Count(_delay));
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (_isActive == false)
+            {
+                _isActive = true;
+                StartCoroutine(Count(_delay));
+            }
+            else
+            {
+                _isActive = false;
+                StopCoroutine(Count(_delay));
+            }
+        }
     }
 
     private IEnumerator Count(float delay)
     {
         var wait = new WaitForSeconds(delay);
 
-        for (int i = 0; i < _iterationsCount; i++)
+        while (_isActive)
         {
             _count++;
             DisplayCounter();
