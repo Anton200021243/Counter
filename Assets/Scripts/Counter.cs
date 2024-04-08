@@ -7,22 +7,36 @@ public class Counter : MonoBehaviour
 {
     private float _delay = 0.5f;
     private int _count;
+
     private bool _isActive = false;
+
+    private Coroutine _countRoutine;
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && _countRoutine == null)
         {
-            if (_isActive == false)
-            {
-                _isActive = true;
-                StartCoroutine(Count(_delay));
-            }
-            else
-            {
-                _isActive = false;
-                StopCoroutine(Count(_delay));
-            }
+            StartRoutine();
+        }
+        else if(Input.GetMouseButtonDown(0))
+        {
+            Stop();
+        }
+    }
+
+    private void StartRoutine()
+    {      
+        _isActive = true;
+        _countRoutine = StartCoroutine(Count(_delay));
+    }
+
+    private void Stop()
+    {
+        if (_countRoutine != null)
+        {
+            StopCoroutine(_countRoutine);
+            _countRoutine = null;
+            _isActive = false;
         }
     }
 
